@@ -1,0 +1,65 @@
+---
+- hosts: proxmox
+  become: false
+  gather_facts: false
+
+  tasks:
+
+    - name: Update proxmox Repositories and pkg
+      include_role:
+        name: homelab-pve
+        tasks_from: proxmox/update
+
+    - name: Load proxmox_ variables
+      include_role:
+        name: homelab-pve
+        tasks_from: proxmox/load-variables
+
+    - name: Configure proxmox
+      include_role:
+        name: homelab-pve
+        tasks_from: proxmox/configure
+      vars:
+        public_key_path: "{{ PVE_ANSIBLE_PATH }}/ssh"
+        server_users: "{{ proxmox_users }}"
+        server_roles: '{{ proxmox_roles }}'
+
+    - name: Save proxmox data
+      include_role:
+        name: homelab-pve
+        tasks_from: proxmox/save-data
+      vars:
+        token_path: "{{ PVE_ANSIBLE_PATH }}/tokens"
+        server_tokens: "{{ proxmox_tokens }}"
+
+- hosts: node
+  become: false
+  gather_facts: false
+
+  tasks:
+
+    - name: Download servers
+      include_role:
+        name: homelab-pve
+        tasks_from: node/download_servers
+
+    - name: Make cloud-init files
+      include_role:
+        name: homelab-pve
+        tasks_from: node/make_cloud_init
+      vars:
+        public_key_path: "{{ PVE_ANSIBLE_PATH }}/ssh"
+
+- hosts: node[0]
+  become: false
+  gather_facts: false
+
+  tasks:
+
+    - name: Make template machines
+      include_role:
+        name: homelab-pve
+        tasks_from: node/make_templates
+      vars:
+        token_path: "{{ PVE_ANSIBLE_PATH }}/tokens"
+        node_host: '{{ ansible_host }}'

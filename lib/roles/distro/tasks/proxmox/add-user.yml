@@ -1,0 +1,9 @@
+
+- name: Add User
+  ansible.builtin.command: "pveum user add {{ name }}"
+  ignore_errors: True
+  become: true
+
+- name: Set Role
+  ansible.builtin.command: "pveum aclmod / -user {{ name }} -role {{ role }}"
+  become: true

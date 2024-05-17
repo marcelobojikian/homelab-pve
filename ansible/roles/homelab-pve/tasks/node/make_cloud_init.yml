@@ -1,0 +1,21 @@
+
+- name: Create cloud-init VMs
+  ansible.builtin.template:
+    src: "templates/user_default.j2"
+    dest: '{{ storage.snippets.path }}/{{ item.vmid }}-cloud-init.yml'
+    owner: root
+    group: root
+    mode: 0644
+  with_items: '{{ machines }}'
+  when: 'item.state == "new"'
+  become: yes
+  no_log: true
+
+- name: Create tofu cloud-init
+  ansible.builtin.template:
+    src: templates/tofu_template.j2
+    dest: '{{ storage.snippets.path }}/tofu-cloud-init.yml'
+    owner: root
+    group: root
+    mode: 0644
+  become: yes

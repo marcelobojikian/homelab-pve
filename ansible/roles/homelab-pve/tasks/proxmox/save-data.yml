@@ -1,0 +1,10 @@
+
+- name: Creating a file with token
+  ansible.builtin.copy:
+    dest: "{{ token_path }}/{{ item.key }}"
+    content: "{{ item.value.value }}"
+    mode: '0600'
+  with_dict: "{{ server_tokens | items2dict }}"
+  when: server_tokens is defined
+  delegate_to: localhost
+  # no_log: True

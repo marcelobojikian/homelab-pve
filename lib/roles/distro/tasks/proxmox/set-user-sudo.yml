@@ -1,0 +1,19 @@
+
+- name: Create user
+  ansible.builtin.user:
+    name: "{{ username }}"
+    shell: '/bin/bash'
+
+- name: Add user ssh key
+  ansible.posix.authorized_key:
+    user: "{{ username }}"
+    key: "{{ lookup('ansible.builtin.file', key_file ) }}"
+
+- name: Add user to sudoers
+  ansible.builtin.template:
+    src: templates/sudoer_user.j2
+    dest: "/etc/sudoers.d/{{ username }}"
+    owner: root
+    group: root
+    mode: 0440
+  become: true

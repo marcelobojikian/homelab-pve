@@ -1,0 +1,52 @@
+
+- name: Update storages
+  include_role:
+    name: distro
+    tasks_from: proxmox/add-storage
+  vars:
+    path: "{{ item.path }}"
+    type: "{{ item.type }}"
+    name: "{{ item.name }}"
+    content: "{{ item.content }}"
+  with_items: '{{ storages }}'
+
+- name: Update roles
+  include_role:
+    name: distro
+    tasks_from: proxmox/add-role
+  vars:
+    name: "{{ item.name }}"
+    privileges: "{{ item.privs }}"
+  with_items: '{{ roles }}'
+  when: server_roles is not search(item.name)
+
+- name: Update users
+  include_role:
+    name: distro
+    tasks_from: proxmox/add-user
+  vars:
+    name: "{{ item.api_user }}"
+    role: "{{ item.api_role }}"
+  with_items: '{{ users }}'
+  when: server_users is not search(item.api_user)
+
+- name: Sudo privilege for users
+  include_role:
+    name: distro
+    tasks_from: proxmox/set-user-sudo
+  vars:
+    username: "{{ item.name }}"
+    key_file: "{{ [ public_key_path, '/', item.key_file] | join }}"
+  with_items: '{{ sudo_users }}'
+  when: sudo_users is defined
+
+- name: Update tokens
+  include_role:
+    name: distro
+    tasks_from: proxmox/add-token
+  vars:
+    user: "{{ item.api_user }}"
+    token_id: "{{ item.api_token_id }}"
+    token_filename: "{{ item.on_file }}"
+  with_items: '{{ users }}'
+  when: server_users is not search(item.api_user)

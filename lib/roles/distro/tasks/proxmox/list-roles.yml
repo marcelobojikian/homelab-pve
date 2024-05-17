@@ -1,0 +1,9 @@
+
+- name: Get list roles (JSON)
+  ansible.builtin.command: pveum role list --output-format json
+  register: cmd_roles
+  become: true
+
+- name: Roles on Fact
+  ansible.builtin.set_fact:
+    proxmox_roles: "{{ cmd_roles.stdout | from_json | community.general.groupby_as_dict('roleid') }}"

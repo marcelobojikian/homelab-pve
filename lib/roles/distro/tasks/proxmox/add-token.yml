@@ -1,0 +1,14 @@
+
+- name: Create user API
+  ansible.builtin.command: "pveum user token add {{ user }} {{ token_id }} --privsep 0 --output-format json"
+  register: secret_response
+  become: true
+
+- name: Tokens on Fact
+  ansible.builtin.set_fact:
+    proxmox_tokens: "{{ tokens | default([]) | 
+                    union([{
+                      'key': token_filename,
+                      'value': secret_response.stdout | from_json
+                    }]) 
+                  }}"

@@ -1,0 +1,10 @@
+
+- name: Load Users
+  include_role:
+    name: distro
+    tasks_from: proxmox/list-users
+
+- name: Load Roles
+  include_role:
+    name: distro
+    tasks_from: proxmox/list-roles

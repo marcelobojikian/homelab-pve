@@ -1,0 +1,101 @@
+{
+    "meta": {
+        "name": "HomeLab - pve",
+        "alert": false,
+        "alert_chat": null,
+        "max_parallel_tasks": 0
+    },
+    "templates": [
+        {
+            "inventory": "Proxmox",
+            "repository": "homelab-pve",
+            "environment": "Local",
+            "name": "Proxmox",
+            "playbook": "playbook.yml",
+            "arguments": null,
+            "allow_override_args_in_task": false,
+            "description": null,
+            "vault_key": "vault-key",
+            "type": "",
+            "start_version": null,
+            "build_template": null,
+            "view": null,
+            "autorun": false,
+            "survey_vars": "null",
+            "suppress_success_alerts": false,
+            "cron": null
+        },
+        {
+            "inventory": "Node",
+            "repository": "homelab-pve",
+            "environment": "Local",
+            "name": "Nodes",
+            "playbook": "playbook.yml",
+            "arguments": null,
+            "allow_override_args_in_task": false,
+            "description": null,
+            "vault_key": "vault-key",
+            "type": "",
+            "start_version": null,
+            "build_template": null,
+            "view": null,
+            "autorun": false,
+            "survey_vars": "null",
+            "suppress_success_alerts": false,
+            "cron": null
+        }
+    ],
+    "repositories": [
+        {
+            "name": "homelab-pve",
+            "git_url": "/opt/ansible/homelab-pve",
+            "git_branch": "",
+            "ssh_key": "None"
+        }
+    ],
+    "keys": [
+        {
+            "name": "None",
+            "type": "none"
+        },
+        {
+            "name": "proxmox-root",
+            "type": "login_password"
+        },
+        {
+            "name": "vault-key",
+            "type": "login_password"
+        }
+    ],
+    "views": [],
+    "inventories": [
+        {
+            "name": "Proxmox",
+            "inventory": "[proxmox]\n192.168.1.171",
+            "ssh_key": "proxmox-root",
+            "become_key": null,
+            "type": "static-yaml"
+        },
+        {
+            "name": "Node",
+            "inventory": "[node]\n192.168.1.171",
+            "ssh_key": "None",
+            "become_key": null,
+            "type": "static-yaml"
+        }
+    ],
+    "environments": [
+        {
+            "name": "Empty",
+            "password": null,
+            "json": "{}",
+            "env": null
+        },
+        {
+            "name": "Local",
+            "password": null,
+            "json": "{\n  \"PVE_ANSIBLE_PATH\": \"/var/opt/ansible\"\n}",
+            "env": "{\n  \"ANSIBLE_PRIVATE_KEY_FILE\": \"/var/opt/ansible/ssh/ansible-key\"\n}"
+        }
+    ]
+}

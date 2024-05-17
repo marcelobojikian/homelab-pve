@@ -1,0 +1,27 @@
+
+drive_storage: local-lvm
+drive_format: qcow2
+linux_bridge: vmbr0
+
+storage:
+  images:
+    id: ansible
+    path: '/var/lib/vz/ansible/images'
+  snippets: 
+    id: ansible
+    path: '/var/lib/vz/ansible/snippets'
+
+machines:
+  - name: debian-11
+    vmid: 50011
+    node: pve
+    image_file: debian-11-generic-amd64.qcow2
+    state: template
+
+os_images:
+  - name: Debian11
+    description: 'Debian 11 (bullseye)'
+    os_file: debian-11-generic-amd64.qcow2
+    url: 'https://cloud.debian.org/images/cloud/bullseye/latest/debian-11-generic-amd64.qcow2'
+    checksum: sha512:cc6c1ed764e0a3eac626579aecb7055eb9eafb4c7b6321d2f4f161ca68f56a6b4779d3edb524d15c209962f3c52a89ab5c02530f7ce4923d9034c5f67eb29b18
+    state: present
