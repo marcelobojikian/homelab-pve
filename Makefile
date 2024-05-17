@@ -23,16 +23,14 @@ it:
 
 dev-run:
 
-	./scripts/decrypt.sh ansible ./security/vault.key
-
 	chmod g+r ansible/group_vars/all/vault.yml
 	chmod g+r ansible/group_vars/node/vault.yml
 	chmod g+r ansible/group_vars/proxmox/vault.yml
 
 	sudo docker run -p 3000:3000 \
 	-v $(shell pwd)/ansible/roles:/opt/ansible/homelab-pve/roles \
-	-v $(shell pwd)/ansible/node.yml:/opt/ansible/homelab-pve/node.yml \
-	-v $(shell pwd)/ansible/proxmox.yml:/opt/ansible/homelab-pve/proxmox.yml \
+	-v $(shell pwd)/ansible/ansible.cfg:/opt/ansible/homelab-pve/ansible.cfg \
+	-v $(shell pwd)/ansible/playbook.yml:/opt/ansible/homelab-pve/playbook.yml \
 	-e SEMAPHORE_DB_DIALECT=bolt \
 	-e SEMAPHORE_ADMIN=admin \
 	-e SEMAPHORE_ADMIN_PASSWORD=changeme \
