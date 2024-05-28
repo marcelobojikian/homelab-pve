@@ -4,10 +4,7 @@ COPY lib /etc/ansible
 
 WORKDIR /var/opt/ansible
 
-COPY --chown=semaphore:root security/ansible-key ./ssh/ansible-key
-COPY --chown=semaphore:root security/ansible-key.pub ./ssh/ansible-key.pub
-COPY --chown=semaphore:root security/ansible.token ./tokens/ansible.token 
-COPY --chown=semaphore:root security/tofu.token ./tokens/tofu.token
+COPY --chown=semaphore:root files/security .
 
 WORKDIR /opt/ansible
 

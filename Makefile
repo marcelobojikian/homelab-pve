@@ -1,9 +1,9 @@
 
 encrypt:
-	./scripts/encrypt.sh ansible ./security/vault.key
+	./scripts/encrypt.sh ansible ./files/security/vault.key
 
 decrypt:
-	./scripts/decrypt.sh ansible ./security/vault.key
+	./scripts/decrypt.sh ansible ./files/security/vault.key
 
 build:
 	sudo docker build -t homelab-pve:v1 .

@@ -1,7 +1,8 @@
 .gitignore
 .dockerignore
 
-files
+files/security/vault.key
+files/semaphore.json
 scripts
 
 Makefile
